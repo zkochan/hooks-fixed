@@ -94,7 +94,7 @@ module.exports = {
           };
       if (_asyncsLeft) {
         function _asyncsDone (err) {
-          if (err && err instanceof Error) {
+          if (err) {
             return handleError(err);
           }
           --_asyncsLeft || _done.apply(self, hookArgs);
