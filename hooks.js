@@ -29,6 +29,18 @@ module.exports = {
         , _total = pres.length
         , _current = -1
         , _asyncsLeft = proto[name].numAsyncPres
+        , _asyncsDone = function(err) {
+            if (err) {
+              return handleError(err);
+            }
+            --_asyncsLeft || _done.apply(self, hookArgs);
+          }
+        , handleError = function(err) {
+            if ('function' == typeof lastArg)
+              return lastArg(err);
+            if (errorCb) return errorCb.call(self, err);
+            throw err;
+          }
         , _next = function () {
             if (arguments[0] instanceof Error) {
               return handleError(arguments[0]);
@@ -92,20 +104,7 @@ module.exports = {
               return ret;
             }
           };
-      if (_asyncsLeft) {
-        function _asyncsDone (err) {
-          if (err) {
-            return handleError(err);
-          }
-          --_asyncsLeft || _done.apply(self, hookArgs);
-        }
-      }
-      function handleError (err) {
-        if ('function' == typeof lastArg)
-          return lastArg(err);
-        if (errorCb) return errorCb.call(self, err);
-        throw err;
-      }
+
       return _next.apply(this, arguments);
     };
     
