@@ -183,6 +183,6 @@ function once (fn, scope) {
   return function fnWrapper () {
     if (fnWrapper.hookCalled) return;
     fnWrapper.hookCalled = true;
-    return fn.apply(scope, arguments);
+    fn.apply(scope, arguments);
   };
 }
